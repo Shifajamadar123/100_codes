@@ -1,0 +1,73 @@
+Method 1:
+
+class Solution {
+    public List<List<Integer>> permute(int[] a) {
+        boolean []freq = new boolean[a.length];
+
+        List<List<Integer>> res = new ArrayList<>();
+        List<Integer> temp = new ArrayList<>();
+        fun(a,temp,res,freq);
+        return res;
+    }
+
+    public static void fun(int []a, List<Integer> temp,List<List<Integer>> res, boolean []freq)
+    {
+        if(temp.size()==a.length)
+        {
+            res.add(new ArrayList<>(temp));
+            return;
+        }
+        for(int i=0;i<freq.length;i++)
+        {
+            if(!freq[i])
+            {
+                temp.add(a[i]);
+                freq[i]=true;
+                fun(a,temp,res,freq);
+                temp.remove(temp.size()-1);
+                freq[i]= false;
+            }
+        }
+        
+    }
+}
+
+
+Method 2:
+
+class Solution {
+    public List<List<Integer>> permute(int[] a) {
+       
+        List<List<Integer>> res = new ArrayList<>();
+        
+        fun(0,a,res);
+        return res;
+    }
+
+    public static void fun(int ind,int []a,List<List<Integer>> res)
+    {
+        if(ind ==a.length)
+        {
+            List<Integer> l = new ArrayList<>();
+            for(int x:a)
+            {
+                l.add(x);
+            }
+            res.add(new ArrayList<>(l));
+            return;
+        }
+        for(int i=ind;i<a.length;i++)
+        {
+            swap(a,i,ind);
+            fun(ind+1,a,res);
+            swap(a,i,ind);
+        }
+    }
+
+    public static void swap(int []a,int c,int b)
+    {
+        int temp = a[b];
+        a[b] = a[c];
+        a[c] = temp;
+    }
+}
