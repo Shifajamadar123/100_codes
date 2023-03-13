@@ -1,0 +1,20 @@
+class Solution {
+    public int vowelStrings(String[] s, int left, int right) {
+        int count=0;
+        
+        for(int i=left;i<=right;i++)
+        {
+            int l = s[i].length()-1;
+            if(s[i].charAt(0)=='a' || s[i].charAt(0)=='e' || s[i].charAt(0)=='i' || s[i].charAt(0)=='o' || s[i].charAt(0)=='u' )
+            {
+                if(s[i].charAt(l)=='a' || s[i].charAt(l)=='e' || s[i].charAt(l)=='i' || s[i].charAt(l)=='o' || s[i].charAt(l)=='u' )
+                {
+                    count++;
+                }
+            }
+        }
+        
+        return count;
+        
+    }
+}
