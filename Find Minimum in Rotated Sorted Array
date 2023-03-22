@@ -1,0 +1,32 @@
+class Solution {
+    public int findMin(int[] a) {
+        int an=pivot(a);
+        if(an==-1)
+            return(a[0]);
+        else
+            return(a[an+1]);
+    }
+    
+    static int pivot(int []a)
+    {
+        int start=0;
+        int end=a.length-1;
+        while(start<=end)
+        {
+            int mid=start+(end-start)/2;
+            if(mid<a.length-1 && a[mid]>a[mid+1])
+                return(mid);
+            if(mid>0 && a[mid]<a[mid-1])
+                return(mid-1);
+            if(a[start]>a[mid])
+            {
+                end=mid-1;
+            }
+            else
+            {
+                start=mid+1;
+            }
+        }
+        return(-1);
+    }
+}
