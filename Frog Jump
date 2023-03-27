@@ -1,0 +1,46 @@
+import java.util.* ;
+import java.io.*; 
+
+
+
+public class Solution {
+    public static int frogJump(int n, int heights[]) {
+
+        // Write your code here..
+        if(n==0)
+        {
+            return 0;
+        }
+        if(n==1)
+        {
+            return Math.abs(heights[0]-heights[1]);
+        }
+        
+        int prev2 = 0;
+        int prev1 = 0;
+        for(int i=1;i<n;i++)
+        {
+            int left = prev1 + Math.abs(heights[i]-heights[i-1]);
+
+            int right = Integer.MAX_VALUE;
+            if(i>1)
+            {
+                right =prev2 + Math.abs(heights[i]-heights[i-2]);
+            }
+            
+            int cur1 = Math.min(left,right);
+            prev2 = prev1;
+            prev1 = cur1;
+            cur1 = Math.min(left,right);
+
+        }
+
+        return prev1;
+
+
+    }
+
+
+    
+
+}
