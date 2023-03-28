@@ -1,0 +1,41 @@
+class Solution {
+    public List<Integer> addToArrayForm(int[] num, int k) {
+        List<Integer> ans=new ArrayList<Integer>();
+        int c=0;
+        int flag=0;
+        for(int i=0;i<num.length;i++)
+        {
+            ans.add(num[i]);
+        }
+        for(int i=ans.size()-1;i>=0 || k!=0;i--)
+        {
+            if(i>=0)
+            {
+                ans.set(i,ans.get(i)+k%10+c);
+                k=k/10;
+                c=0;
+                if(ans.get(i)>=10)
+                {
+                    ans.set(i,ans.get(i)%10);
+                    c=1;
+                }
+            }
+            else
+            {   
+                
+                flag=1;
+                ans.add(0,k%10+c);
+                k=k/10;
+                c=0;
+                if(ans.get(0)>=10)
+                {
+                    ans.set(0,ans.get(0)%10);
+                    c=1;
+                }
+            }
+        }
+        if(c==1)
+            ans.add(0,1);
+        return(ans);
+    }
+}
