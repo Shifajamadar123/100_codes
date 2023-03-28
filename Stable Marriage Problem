@@ -1,0 +1,110 @@
+/* package codechef; // don't place package name! */
+
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+/* Name of the class has to be "Main" only if the class is public. */
+class Codechef
+{
+    public static void main(String[] args)
+    {
+        // your code goes here
+        Scanner scan=new Scanner(System.in);
+
+        int t=scan.nextInt();
+
+        while(t>0)
+        {
+            int n=scan.nextInt();
+            int[][] m = new int[n][n];
+            int[][] w = new int[n][n];
+            for(int i=0;i<n;i++)
+            {
+                int temp=scan.nextInt();
+                for(int j=0;j<n;j++)
+                {
+                    w[i][j]=scan.nextInt()-1;
+                }
+            }
+            for(int i=0;i<n;i++)
+            {
+                int temp=scan.nextInt();
+                for(int j=0;j<n;j++)
+                {
+                    m[i][j]=scan.nextInt()-1;
+                }
+            }
+
+
+            fun(n,w,m);
+            t--;
+        }
+    }
+
+
+    public static void fun(int n,int [][]w,int [][]m)
+    {
+        boolean []freeWomen = new boolean[n];
+        int freeW = n;
+        int []menChoice = new int[n];
+        Arrays.fill(menChoice,-1);
+        while(freeW>0)
+        {
+            int j=0;
+            for(int i=0;i<n;i++)
+            {
+                if(freeWomen[i]==false)
+                {
+                    j=i;
+                    break;
+                }
+            }
+
+            for(int i=0;i<n && !freeWomen[j];i++)
+            {
+                int WomenPref = w[j][i];
+                if(menChoice[WomenPref]==-1)
+                {
+                    menChoice[WomenPref] = j;
+                    freeWomen[j]=true;
+                    freeW--;
+                }
+                else
+                {
+                    int currentPref = menChoice[WomenPref];
+                    if(isShePref(m,j,currentPref,WomenPref))
+                    {
+                        menChoice[WomenPref] = j;
+                        freeWomen[j] = true;
+                        freeWomen[currentPref]=false;
+
+                    }
+                }
+            }
+
+        }
+        for(int i=0;i<n;i++)
+        {
+            System.out.println((i+1)+" "+(menChoice[i]+1));
+        }
+    }
+
+
+    public static boolean isShePref(int [][]m,int women1,int women2,int man)
+    {
+        int n = m.length;
+        for(int i=0;i<n;i++)
+        {
+            if(m[man][i]==women1)
+            {
+                return true;
+            }
+            if(m[man][i]==women2)
+            {
+                return false;
+            }
+        }
+        return false;
+    }
+}
