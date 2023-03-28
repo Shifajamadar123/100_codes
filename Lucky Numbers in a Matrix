@@ -1,0 +1,53 @@
+class Solution {
+    public List<Integer> luckyNumbers (int[][] matrix) {
+        List<Integer> min=new ArrayList<Integer>();
+        List<Integer> ans=new ArrayList<Integer>();
+        List<Integer> max=new ArrayList<Integer>();
+        HashMap<Integer,Integer> temp=new HashMap<>();
+        for(int i=0;i<matrix.length;i++)
+        {
+            min.add(i,min(matrix,i));
+        }
+        for(int i=0;i<matrix[0].length;i++)
+        {
+            max.add(i,max(matrix,i));
+        }
+        for(int i=0;i<min.size();i++)
+        {
+            temp.put(min.get(i),i);
+        }
+        for(int i=0;i<max.size();i++)
+        {
+            if(temp.containsKey(max.get(i)))
+            {
+                
+                ans.add(max.get(i));
+                return(ans);
+            }
+        }
+        return(ans);
+    }
+    
+    static int min(int [][]matrix,int i)
+    {
+        int m=matrix[i][0];
+        for(int j=1;j<matrix[i].length;j++)
+        {
+            if(matrix[i][j]<m)
+            
+                m=matrix[i][j];
+        }
+        return(m);
+    }
+    
+    static int max(int [][]matrix,int i)
+    {
+        int m=matrix[0][i];
+        for(int j=1;j<matrix.length;j++)
+        {
+            if(matrix[j][i]>m)
+                m=matrix[j][i];
+        }
+        return(m);
+    }
+}
