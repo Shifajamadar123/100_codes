@@ -1,0 +1,82 @@
+class NumArray {
+    private static int []a;
+    private static int []nums;
+    private static int n=0;
+    public NumArray(int[] nums) {
+        this.nums = nums;
+        this.a = new int[4*nums.length];
+        this.n = nums.length;
+        build(0,0,n-1);
+        System.out.println(Arrays.toString(a));
+    }
+
+    public static void build(int ind,int low,int high)
+    {
+        if(low==high)
+        {
+            a[ind] = nums[low];
+            return;
+        }
+        int mid = low+(high-low)/2;
+        build(2*ind+1,low,mid);
+        build(2*ind+2,mid+1,high);
+        a[ind] = a[2*ind+1] + a[2*ind+2];
+    }
+    
+    public static void update(int index, int val) {
+        upd(0,0,n-1,index,val);
+        // System.out.println(Arrays.toString(a));
+        // System.out.println(Arrays.toString(nums));
+    }
+
+    public static void upd(int ind,int low,int high,int i,int val)
+    {
+        if(low==high)
+        {
+            nums[low] = val;
+            a[ind] = val;
+            return;
+        }
+        int mid = low+(high-low)/2;
+        if(i<=mid)
+        {
+            upd(2*ind+1,low,mid,i,val);
+        }
+        else
+        {
+            upd(2*ind+2,mid+1,high,i,val);
+        }
+        a[ind] = a[2*ind+1]+a[2*ind+2];
+    }
+    
+    public static int sumRange(int left, int right) {
+        return query(0,0,n-1,left,right);
+    }
+
+    public static int query(int ind,int low,int high,int l,int r)
+    {
+        if(low>=l && high<=r)
+        {
+            return a[ind];
+        }
+        if(high<l || low>r)
+        {
+            return 0;
+        }
+        if(low==high)
+        {
+            return a[ind];
+        }
+        int mid = low+(high-low)/2;
+        int left = query(2*ind+1,low,mid,l,r);
+        int right = query(2*ind+2,mid+1,high,l,r);
+        return (left+right);
+    }
+}
+
+/**
+ * Your NumArray object will be instantiated and called as such:
+ * NumArray obj = new NumArray(nums);
+ * obj.update(index,val);
+ * int param_2 = obj.sumRange(left,right);
+ */
