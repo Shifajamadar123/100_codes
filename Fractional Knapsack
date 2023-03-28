@@ -1,0 +1,47 @@
+class Solution
+{
+    //Function to get the maximum total value in the knapsack.
+    double fractionalKnapsack(int W, Item arr[], int n) 
+    {
+        // Your code here
+        double res=0;
+        Arrays.sort(arr, new Comparator<Item>() {
+            @Override
+            public int compare(Item item1,
+                               Item item2)
+            {
+                double valueWeight1
+                    = new Double((double)item1.value
+                                 / (double)item1.weight);
+                double valueWeight2
+                    = new Double((double)item2.value
+                                 / (double)item2.weight);
+ 
+                if (valueWeight1 < valueWeight2)
+                    return 1;
+                else
+                    return -1;
+            }
+        });
+        // for(Item x:arr)
+        // {
+        //     System.out.println(x.weight+" "+x.value);
+        // }
+        for(Item x:arr)
+        {
+            if(W-x.weight >=0)
+            {
+                res = res + x.value;
+                W = W - x.weight;
+            }
+            else
+            {
+                double temp =(double) W/x.weight;
+                // System.out.println(temp);
+                res = res + temp*x.value;
+                break;
+            }
+        }
+        return res;
+    }
+}
