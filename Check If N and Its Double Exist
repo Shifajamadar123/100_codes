@@ -1,0 +1,54 @@
+class Solution {
+    public boolean checkIfExist(int[] a) {
+        sort(a);
+        int ans;
+        for(int i=0;i<a.length;i++)
+        {
+            ans=binary(a,0,a.length-1,a[i]*2);
+            if(ans!=-1 && ans!=i)
+                return(true);
+        }
+        return(false);
+        
+    }
+    
+    static int binary(int []a,int start,int end,int target)
+    {
+        while(start<=end)
+        {
+            int mid=start+(end-start)/2;
+            if(a[mid]==target)
+                return(mid);
+            if(target>a[mid])
+                start=mid+1;
+            else
+                end=mid-1;
+        }
+        return(-1);
+    }
+    
+    static void sort(int []a)
+    {
+        for(int i=0;i<=a.length-2;i++)
+		{
+			for(int j=i+1;j>0;j--)
+			{
+				if(a[j]<a[j-1])
+				{
+					swap(a,j,j-1);
+				}
+				else
+				{
+					break;
+				}
+			}
+		}
+    }
+    
+    static void swap(int []a,int i,int j)
+    {
+        int temp=a[i];
+        a[i]=a[j];
+        a[j]=temp;
+    }
+}
