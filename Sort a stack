@@ -1,0 +1,29 @@
+class GfG{
+	public Stack<Integer> sort(Stack<Integer> s)
+	{
+		//add code here.
+		
+		sort(s,s.size());
+		return s;
+	}
+	
+	public static void sort(Stack<Integer> s,int n)
+	{
+	    if(n<=1)
+	    {
+	        return;
+	    }
+	    
+	    for(int i=0;i<n-1;i++)
+	    {
+	        
+	        if(s.get(i)>s.get(i+1))
+	        {
+	            int temp = s.get(i);
+	            s.set(i,s.get(i+1));
+	            s.set(i+1,temp);
+	        }
+	    }
+	    sort(s,n-1);
+	}
+}
