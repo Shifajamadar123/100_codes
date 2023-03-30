@@ -16,3 +16,34 @@ public class Solution {
 
 	}
 }
+
+
+Recursion:
+
+import java.util.* ;
+import java.io.*; 
+import java.util.*;
+public class Solution {
+	public static int maximumNonAdjacentSum(ArrayList<Integer> nums) {
+		// Write your code here.
+		return fun(nums.size()-1,nums);
+
+	}
+
+	public static int fun(int i,ArrayList<Integer> l)
+	{
+		if(i==0)
+		{
+			return l.get(0);
+		}
+		if(i<0)
+		{
+			return 0;
+		}
+		int pick = l.get(i)+fun(i-2,l);
+		int noPick = fun(i-1,l);
+
+		return Math.max(pick,noPick);
+
+	}
+}
