@@ -47,3 +47,30 @@ public class Solution {
 
 	}
 }
+
+Space optimization:
+
+import java.util.* ;
+import java.io.*; 
+import java.util.*;
+public class Solution {
+	public static int maximumNonAdjacentSum(ArrayList<Integer> nums) {
+		// Write your code here.
+		int prev2=0;
+		int prev1=nums.get(0);
+		for(int i=1;i<nums.size();i++)
+		{
+			int take = nums.get(i);
+			if(i>1)
+			{
+				take +=prev2;
+			}
+			int noTake = prev1;
+			int cur = Math.max(take,noTake);
+			prev2=prev1;
+			prev1=cur;
+		}
+		return prev1;
+
+	}
+}
