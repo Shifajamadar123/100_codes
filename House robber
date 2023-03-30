@@ -1,0 +1,36 @@
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+	public static long houseRobber(int[] valueInHouse) {
+		// Write your code here.
+		if(valueInHouse.length==1)
+		{
+			return (long)valueInHouse[0];
+		}
+		long ans1 = fun(1,valueInHouse,valueInHouse.length);
+		long ans2 = fun(0,valueInHouse,valueInHouse.length-1);
+
+		return Math.max(ans1,ans2);
+
+	}	
+
+	public static long fun(int s,int []nums,int n) {
+		// Write your code here.
+		long prev2=0;
+		long prev1=nums[s];
+		for(int i=s+1;i<n;i++)
+		{
+			long take = nums[i];
+			if(i>1)
+			{
+				take +=prev2;
+			}
+			long noTake = prev1;
+			long cur = Math.max(take,noTake);
+			prev2=prev1;
+			prev1=cur;
+		}
+		return prev1;
+
+	}
+}
