@@ -1,0 +1,27 @@
+class Solution {
+    public int missingNumber(int[] a) {
+        for(int i=0;i<a.length;)
+		{
+			if(a[i]!=i && a[i]!=a.length)
+			{
+				swap(a,a[i],i);
+			}
+			else
+			{
+				i++;
+			}
+		}
+        for(int i=0;i<a.length;i++)
+        {
+            if(a[i]!=i)
+                return(i);
+        }
+        return(a.length);
+    }
+    public static void swap(int a[],int first,int last)
+	{
+		int temp=a[last];
+		a[last]=a[first];
+		a[first]=temp;
+	}
+}
