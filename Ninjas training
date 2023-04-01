@@ -1,0 +1,43 @@
+import java.util.*;
+public class Solution {
+    public static int ninjaTraining(int n, int points[][]) {
+
+        // Write your code here..
+        int [][]dp = new int[n][4];
+        for (int[] row: dp)
+            Arrays.fill(row, -1);
+        return fun(n-1,points,dp,3);
+    }
+
+    public static int fun(int n,int [][]a,int [][]dp,int last)
+    {
+        if(dp[n][last]!=-1) return dp[n][last];
+        if(n==0)
+        {
+            int max= 0;
+            for(int i=0;i<3;i++)
+            {
+                if(i!=last)
+                {
+                    max = Math.max(max,a[0][i]);
+                }
+            }
+            return dp[n][last] = max;
+        }
+
+        
+
+        int max=0;
+        for(int i=0;i< 3;i++)
+        {
+            if(i!=last)
+            {
+                int points = a[n][i] + fun(n-1,a,dp,i);
+                max = Math.max(max,points);
+            }
+        }
+
+        return dp[n][last] = max;
+    }
+
+}
