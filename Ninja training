@@ -1,0 +1,81 @@
+Memoization:
+
+import java.util.*;
+public class Solution {
+    public static int ninjaTraining(int n, int points[][]) {
+
+        // Write your code here..
+        int [][]dp = new int[n][4];
+        for (int[] row: dp)
+            Arrays.fill(row, -1);
+        return fun(n-1,points,dp,3);
+    }
+
+    public static int fun(int n,int [][]a,int [][]dp,int last)
+    {
+        if(dp[n][last]!=-1) return dp[n][last];
+        if(n==0)
+        {
+            int max= 0;
+            for(int i=0;i<=2;i++)
+            {
+                if(i!=last)
+                {
+                    max = Math.max(max,a[0][i]);
+                }
+            }
+            return dp[n][last] = max;
+        }
+
+        
+
+        int max=0;
+        for(int i=0;i<=2;i++)
+        {
+            if(i!=last)
+            {
+                int points = a[n][i] + fun(n-1,a,dp,i);
+                max = Math.max(max,points);
+            }
+        }
+
+        return dp[n][last] = max;
+    }
+
+}
+
+
+DP:
+
+import java.util.*;
+public class Solution {
+    public static int ninjaTraining(int n, int points[][]) {
+
+        // Write your code here..
+        int [][]dp = new int[n][4];
+        for (int[] row: dp)
+            Arrays.fill(row, -1);
+        dp[0][0] = Math.max(points[0][1],points[0][2]);
+        dp[0][1] = Math.max(points[0][0],points[0][2]);
+        dp[0][2] = Math.max(points[0][1],points[0][0]);
+        dp[0][3] = Math.max(points[0][1],Math.max(points[0][2],points[0][0]));
+
+        for(int i=1;i<n;i++)
+        {
+            for(int last=0;last<4;last++)
+            {
+                dp[i][last] = 0;
+                for(int task=0;task<3;task++)
+                {
+                    if(task!=last)
+                    {
+                        int point = points[i][task] + dp[i-1][task];
+                        dp[i][last] = Math.max(dp[i][last],point);
+                    }
+                }
+            }
+        }
+        return dp[n-1][3];
+    }
+
+}
