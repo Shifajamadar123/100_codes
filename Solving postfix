@@ -1,0 +1,72 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define STACKSIZE 100
+
+struct stack
+{
+    double s[STACKSIZE];
+    int top;
+};
+
+void push(struct stack *ps,double data)
+{
+    ps->top=ps->top+1;
+    ps->s[ps->top]=data;
+}
+
+char pop(struct stack *ps)
+{
+    double data;
+    data=ps->s[ps->top];
+    ps->top=ps->top-1;
+    return(data);
+}
+
+double evalpost(char postf[])
+{
+    int i;
+    double op1,op2,res;
+    char inp;
+    struct stack stk;
+    stk.top=-1;
+    for(i=0;(inp=postf[i])!='\0';i++)
+    {
+        if(isalpha(inp))
+        {
+            printf("\nEnter the value of the variable %c:  ",inp);
+            scanf("%lf",&res);
+            push(&stk,res);
+        }
+        else if(isdigit(inp))
+        {
+            push(&stk,inp-'0');
+        }
+        else
+        {
+            op2=pop(&stk);
+            op1=pop(&stk);
+            switch(inp)
+            {
+                case '+':res=op1+op2; break;
+                case '-':res=op1-op2; break;
+                case '*':res=op1*op2; break;
+                case '/':res=op1/op2; break;
+                case '$':res=pow(op1,op2); break;
+            }
+            push(&stk,res);
+        }
+    }
+    return(pop(&stk));
+}
+
+int main()
+{
+    char postfix[100];
+    double x;
+    printf("\nEnter postfix expression:  ");
+    scanf("%s",postfix);
+    x=evalpost(postfix);
+    printf("\nThe answer for the expression is: %lf ",x);
+    return 0;
+}
