@@ -1,0 +1,73 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+struct node
+{
+    int data;
+    struct node *next;
+};
+struct node* createlist(struct node *first,int n)
+{
+    struct node *nw,*temp;
+    int i;
+    first=(struct node *)malloc(sizeof(struct node));
+    printf("\nEnter data 1:  ");
+    scanf("%d",&first->data);
+    temp=first;
+    for(i=2;i<=n;i++)
+    {
+        nw=(struct node *)malloc(sizeof(struct node));
+        printf("\nEnter data %d:  ",i);
+        scanf("%d",&nw->data);
+        temp->next=nw;
+        nw->next=NULL;
+        temp=temp->next;
+    }
+    return(first);
+}
+void display(struct node *first)
+{
+    struct node *nw=first;
+    printf("---------------------------------------\n");
+    for(nw=first;nw!=NULL;nw=nw->next)
+    {
+        printf("%d   ",nw->data);
+    }
+    printf("\n---------------------------------------\n");
+}
+void swap(struct node *x, struct node *y)
+{
+    int tempdata;
+    tempdata=x->data;
+    x->data=y->data;
+    y->data=tempdata;
+}
+void sort(struct node *first)
+{
+    struct node *i,*j;
+    for(i=first;i->next!=NULL;i=i->next)
+    {
+        for(j=first;j->next!=NULL;j=j->next)
+        {
+            if((j->data)>(j->next->data))
+            {
+                swap(j,j->next);
+            }
+        }
+    }
+}
+
+int main()
+{
+    struct node *first=NULL;
+    int n;
+    printf("\nEnter the number of nodes:  ");
+    scanf("%d",&n);
+    first=createlist(first,n);
+    printf("\nBefore sorting data:\n");
+    display(first);
+    sort(first);
+    printf("\nData after sorting:\n");
+    display(first);
+    return 0;
+}
