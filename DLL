@@ -1,0 +1,269 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct node
+{
+    int data;
+    struct node *next,*prev;
+};
+typedef struct node* Node;
+
+Node getnode()
+{
+    Node nw;
+    nw=(Node)malloc(sizeof(struct node));
+    if(nw==NULL)
+    {
+        printf("\nNode not created");
+        return(nw);
+    }
+    else
+    {
+        printf("\nEnter data:  ");
+        scanf("%d",&nw->data);
+    }
+    return(nw);
+}
+
+Node creatlist(Node first)
+{
+    Node temp,nw;
+    int n,i;
+    printf("\nEnter n:  ");
+    scanf("%d",&n);
+    if(n<=0)
+        return(first);
+    else
+    {
+        for(i=1;i<=n;i++)
+        {
+            nw=getnode();
+            if(first==NULL)
+            {
+                first=nw;
+                first->prev=NULL;
+                first->next=NULL;
+            }
+            else
+            {
+                for(temp=first;temp->next!=NULL;temp=temp->next);
+                temp->next=nw;
+                nw->prev=temp;
+                nw->next=NULL;
+            }
+        }
+    }
+    return(first);
+}
+
+void display(Node first)
+{
+    Node temp;
+    printf("\nLost in forward direction");
+    printf("\n------------------------------\n");
+    for(temp=first;temp!=NULL;temp=temp->next)
+    {
+        printf("%d  ",temp->data);
+    }
+    printf("\n------------------------------\n");
+    printf("\nLost in reverse direction");
+    printf("\n------------------------------\n");
+    for(temp=first;temp->next!=NULL;temp=temp->next);
+    while(temp!=NULL)
+    {
+        printf("%d  ",temp->data);
+        temp=temp->prev;
+    }
+    printf("\n------------------------------\n");
+}
+
+Node insertfront(Node first)
+{
+    Node nw;
+    nw=getnode();
+    if(first==NULL)
+    {
+        first=nw;
+        first->prev=NULL;
+        first->next=NULL;
+        return(first);
+    }
+    else
+    {
+        nw->next=first;
+        first->prev=nw;
+        nw->prev=NULL;
+        first=nw;
+        return(first);
+    }
+}
+
+Node insertrear(Node first)
+{
+    Node temp,nw;
+    nw=getnode();
+    if(first==NULL)
+    {
+        first=nw;
+        first->prev=NULL;
+        first->next=NULL;
+        return(first);
+    }
+    else
+    {
+        for(temp=first;temp->next!=NULL;temp=temp->next);
+        temp->next=nw;
+        nw->next=NULL;
+        nw->prev=temp;
+        return(first);
+    }
+}
+
+Node deletefront(Node first)
+{
+    Node temp=first;
+    if(first==NULL)
+    {
+        printf("\nList empty");
+        return(first);
+    }
+    else if(first->next==NULL)
+    {
+        free(temp);
+        first=NULL;
+        return(first);
+    }
+    else
+    {
+        first=first->next;
+        first->prev=NULL;
+        free(temp);
+        return(first);
+    }
+}
+
+Node deleterear(Node first)
+{
+    Node temp=first;
+    if(first==NULL)
+    {
+        printf("\nList empty");
+        return(first);
+    }
+    else if(first->next==NULL)
+    {
+        free(temp);
+        first=NULL;
+        return(first);
+    }
+    else
+    {
+        for(temp=first;temp->next!=NULL;temp=temp->next);
+        temp->prev->next=NULL;
+        free(temp);
+        return(first);
+    }
+}
+
+Node insertany(Node first)
+{
+    Node nw,temp;
+    int pos,i;
+    printf("\nEnter position:  ");
+    scanf("%d",&pos);
+    if(pos<=0 || (first==NULL && pos>1))
+    {
+        printf("\nInvalid position");
+        return(first);
+    }
+    if(pos==1)
+    {
+        first=insertfront(first);
+        return(first);
+    }
+    for(temp=first,i=1;temp!=NULL && i<pos;temp=temp->next,i++);
+    if(pos>i)
+    {
+        printf("\nInvalid position");
+        return(first);
+    }
+    if(temp==NULL && pos==i)
+    {
+        first=insertrear(first);
+        return(first);
+    }
+    else
+    {
+        nw=getnode();
+        temp->prev->next=nw;
+        nw->prev=temp->prev;
+        nw->next=temp;
+        temp->prev=nw;
+        return(first);
+    }
+
+}
+
+Node deleteany(Node first)
+{
+    Node temp;
+    int pos,i;
+    if(first==NULL)
+    {
+        printf("\nList is empty");
+        return(first);
+    }
+    printf("\nEnter position:  ");
+    scanf("%d",&pos);
+    if(pos<=0 || (first==NULL && pos>1))
+    {
+        printf("\nInvalid position");
+        return(first);
+    }
+    if(pos==1)
+    {
+        first=deletefront(first);
+        return(first);
+    }
+    for(temp=first,i=1;temp!=NULL && i<pos;temp=temp->next,i++);
+    if(pos>i || temp==NULL)
+    {
+        printf("\nInvalid position");
+        return(first);
+    }
+    if(temp->next==NULL && pos==i)
+    {
+        first=deleterear(first);
+        return(first);
+    }
+    else
+    {
+        temp->prev->next=temp->next;
+        temp->next->prev=temp->prev;
+        free(temp);
+        return(first);
+    }
+}
+
+
+
+int main()
+{
+    Node first=NULL;
+    int ch;
+    do
+    {
+        printf("\n1->create list 2->insert any 3->delete any  4->display 5->exit:  ");
+        scanf("%d",&ch);
+        switch(ch)
+        {
+            case 1:first=creatlist(first); break;
+            case 2:first=insertany(first); break;
+            case 3:first=deleteany(first); break;
+            case 4:display(first); break;
+            case 5:break;
+        }
+    }while(ch!=5);
+    return 0;
+}
