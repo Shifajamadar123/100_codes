@@ -1,0 +1,121 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct bst
+{
+    int height;
+    int data;
+    struct bst *left,*right;
+};
+typedef struct bst* bst;
+
+int height(bst p)
+{
+    if(p==NULL)
+        return(0);
+    else
+        return(p->height);
+}
+
+int max(int x,int y)
+{
+    if(x>y)
+        return(x);
+    else
+        return(y);
+}
+
+bst leftrot(bst cur)
+{
+    bst p1,p2;
+    p1=cur;
+    p2=p1->right;
+    p1->right=p2->left;
+    p2->left=p1;
+    p1->height=1+max(height(p1->left),height(p1->right));
+    p2->height=1+max(height(p2->left),height(p2->right));
+    return(p2);
+}
+
+bst rightrot(bst cur)
+{
+    bst p1,p2;
+    p1=cur;
+    p2=p1->left;
+    p1->left=p2->right;
+    p2->right=p1;
+    p1->height=1+max(height(p1->left),height(p1->right));
+    p2->height=1+max(height(p2->left),height(p2->right));
+    return(p2);
+}
+
+bst getnode(int key)
+{
+    bst nw;
+    nw=malloc(sizeof(struct bst));
+    nw->data=key;
+    nw->height=1;
+    nw->right=nw->left=NULL;
+    return(nw);
+}
+
+bst insertavl(bst cur,int key)
+{
+    int bal;
+    if(cur==NULL)
+    {
+        cur=getnode(key);
+        return(cur);
+    }
+    else if(key<cur->data)
+        cur->left=insertavl(cur->left,key);
+    else
+        cur->right=insertavl(cur->right,key);
+    cur->height=1+max(height(cur->left),height(cur->right));
+    bal=height(cur->left)-height(cur->right);
+    if(bal>1 && key<cur->left->data)
+        cur=rightrot(cur);
+    else if(bal<-1 && key>cur->right->data)
+        cur=leftrot(cur);
+    else if(bal>1 && key>cur->left->data)
+    {
+        cur->left=leftrot(cur->left);
+        cur=rightrot(cur);
+    }
+    else if(bal<-1 && key<cur->right->data)
+    {
+        cur->right=rightrot(cur->right);
+        cur=leftrot(cur);
+    }
+    return(cur);
+}
+
+void display(bst temp)
+{
+    printf("\n%d",temp->data);
+}
+
+void inorder(bst par)
+{
+    if(par==NULL)
+        return;
+    inorder(par->left);
+    display(par);
+    inorder(par->right);
+}
+
+
+int main()
+{
+    int n,key;
+    scanf("%d",&n);
+    bst nw,root=NULL;
+    int i;
+    for(i=0;i<n;i++)
+    {
+        scanf("%d",&key);
+        root=insertavl(root,key);
+    }
+    printf("\nInorder\n");
+    inorder(root);
+    return 0;
+}
