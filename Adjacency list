@@ -1,0 +1,64 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct node
+{
+    int vertex;
+    struct node *next;
+};
+
+struct node* getnode()
+{
+    struct node *nw;
+    nw=calloc(sizeof(struct node),1);
+    return(nw);
+}
+
+void display(struct node **a,int ver)
+{
+    struct node *temp;
+    int i;
+    for(i=0;i<ver;i++)
+    {
+        printf("\n--------------------------------------------");
+        printf("\nVertex that can be travelled from %d ",i);
+        printf("\n--------------------------------------------");
+        printf("\n");
+        for(temp=a[i];temp!=NULL;temp=temp->next)
+        {
+            printf("%d  ",temp->vertex);
+        }
+    }
+}
+
+int main()
+{
+    int ver,i,ch;
+    struct node **a,*nw=NULL,*prev;
+    printf("\nEnter vertex: ");
+    scanf("%d",&ver);
+    a=calloc(sizeof(struct node*),ver);
+    for(i=0;i<ver;i++)
+    {
+        do
+        {
+            printf("\nDo you have edge from vertex %d [1->yes][0->no]:  ",i);
+            scanf("%d",&ch);
+            if(ch==1)
+            {
+                prev=nw;
+                nw=getnode();
+                nw->next=NULL;
+                printf("\nEnter destination vertex:  ");
+                scanf("%d",&nw->vertex);
+                if(a[i]==NULL)
+                    a[i]=nw;
+                else
+                    prev->next=nw;
+            }
+            else
+                break;
+        }while(1);
+    }
+    display(a,ver);
+    return 0;
+}
