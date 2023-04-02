@@ -1,0 +1,359 @@
+Bubble sort:
+
+import java.util.*;
+public class Main {
+	public static void main(String []args)
+	{
+		boolean swapped;//if there is no swapping it means the array is sorted
+		Scanner scan=new Scanner(System.in);
+		System.out.println("Enter size of array");
+		int []a=new int[scan.nextInt()];
+		read(a);
+		System.out.println(Arrays.toString(a));
+		for(int i=0;i<a.length;i++)
+		{
+			swapped=false;
+			for(int j=1;j<a.length-1-i;j++)
+			{
+				if(a[j-1]>a[j])
+				{
+					swap(a,j-1,j);
+					swapped=true;
+				}
+			}
+			if(!swapped)
+			{
+				break;
+			}
+		}
+	}
+	
+	public static void read(int []a)
+	{
+		System.out.println("Enter Array");
+		Scanner scan=new Scanner(System.in);
+		for(int i=0;i<a.length;i++)
+			a[i]=scan.nextInt();
+	}
+	
+	public static void swap(int a[],int first,int last)
+	{
+		int temp=a[last];
+		a[last]=a[first];
+		a[first]=temp;
+	}
+}
+
+Cycle sort:
+import java.util.Arrays;
+import java.util.Scanner;
+
+
+public class Main {
+	public static void main(String []args)
+	{
+		Scanner scan=new Scanner(System.in);
+		System.out.println("Enter size of array");
+		int []a=new int[scan.nextInt()];
+		read(a);
+		System.out.println(Arrays.toString(a));
+		for(int i=0;i<a.length;)
+		{
+			if(a[i]!=i+1)
+			{
+				swap(a,a[i]-1,i);
+			}
+			else
+			{
+				i++;
+			}
+		}
+		System.out.println(Arrays.toString(a));
+	}
+	public static void read(int []a)
+	{
+		System.out.println("Enter Array");
+		Scanner scan=new Scanner(System.in);
+		for(int i=0;i<a.length;i++)
+			a[i]=scan.nextInt();
+	}
+	
+	public static void swap(int a[],int first,int last)
+	{
+		int temp=a[last];
+		a[last]=a[first];
+		a[first]=temp;
+	}
+}
+
+Insertion sort:
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+	public static void main(String []args)
+	{
+		Scanner scan=new Scanner(System.in);
+		System.out.println("Enter size of array");
+		int []a=new int[scan.nextInt()];
+		read(a);
+		System.out.println(Arrays.toString(a));
+		for(int i=0;i<=a.length-2;i++)
+		{
+			for(int j=i+1;j>0;j--)
+			{
+				if(a[j]<a[j-1])
+				{
+					swap(a,j,j-1);
+				}
+				else
+				{
+					break;
+				}
+			}
+		}
+		System.out.println(Arrays.toString(a));
+	}
+	public static void read(int []a)
+	{
+		System.out.println("Enter Array");
+		Scanner scan=new Scanner(System.in);
+		for(int i=0;i<a.length;i++)
+			a[i]=scan.nextInt();
+	}
+	
+	public static void swap(int a[],int first,int last)
+	{
+		int temp=a[last];
+		a[last]=a[first];
+		a[first]=temp;
+	}
+}
+
+
+Merge sort:
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main
+{
+    public static void main(String[] args)
+    {
+        Scanner scan=new Scanner(System.in);
+        int[] arr={5,3,4,1,2,2,3,1,6,7,8};
+        int[] ans=mergeSort(arr);
+        inplaceMergeSort(arr,0,arr.length);
+        System.out.println(Arrays.toString(arr));
+        System.out.println(Arrays.toString(ans));
+    }
+
+    public static int[] mergeSort(int[] arr)
+    {
+         if(arr.length==1)
+        {
+            return(arr);
+        }
+
+        int mid=arr.length/2;
+        int[] left=mergeSort(Arrays.copyOfRange(arr,0,mid));
+        int[] right=mergeSort(Arrays.copyOfRange(arr,mid,arr.length));
+
+        return merge(left,right);
+    }
+
+    public static  int[] merge(int[] first, int[] second)
+    {
+        int[] mix = new int[first.length+ second.length];
+        int i=0;
+        int j=0;
+        int k=0;
+
+        while(i< first.length && j< second.length)
+        {
+            if(first[i]<second[j])
+            {
+                mix[k]=first[i];
+                i++;
+            }
+            else
+            {
+                mix[k]=second[j];
+                j++;
+            }
+            k++;
+        }
+        while(i< first.length)
+        {
+                mix[k]=first[i];
+                k++;
+                i++;
+        }
+        while(j< second.length)
+        {
+                mix[k]=second[j];
+                k++;
+                j++;
+        }
+        return(mix);
+    }
+
+    public static void inplaceMergeSort(int[] arr, int s, int e)
+    {
+        if(e-s==1)
+        {
+            return ;
+        }
+        int mid=(e+s)/2;
+
+        inplaceMergeSort(arr,s,mid);
+        inplaceMergeSort(arr,mid,e);
+
+        inplaceMerge(arr,s,mid,e);
+
+    }
+
+    public static void inplaceMerge(int[]arr,int s,int m,int e)
+    {
+        int i=s;
+        int j=m;
+        int k=0;
+        int[] mix=new int[e-s];
+
+        while(i<m && j<e)
+        {
+            if(arr[i]<arr[j])
+            {
+                mix[k]=arr[i];
+                i++;
+            }
+            else
+            {
+                mix[k]=arr[j];
+                j++;
+            }
+            k++;
+        }
+
+        while(i<m)
+        {
+            mix[k]=arr[i];
+            i++;
+            k++;
+        }
+
+        while(j<e)
+        {
+            mix[k]=arr[j];
+            j++;
+            k++;
+        }
+
+        for(int l=0;l<mix.length;l++)
+        {
+            arr[s+l]=mix[l];
+        }
+    }
+
+}
+
+Quick sort:
+import java.util.Arrays;
+
+public class Main {
+    public static void main(String[] args) {
+        int[] arr={3,4,2,3,4,1,2,5};
+        quickSort(arr,0,arr.length-1);
+        Arrays.sort(arr);
+        System.out.println(Arrays.toString(arr));
+    }
+
+    public static void quickSort(int[]arr,int low,int high)
+    {
+        if(low>high)
+        {
+            return;
+        }
+        int s=low;
+        int e=high;
+        int mid=(s+e)/2;
+        int pivot=arr[mid];
+
+        while(s<=e)
+        {
+            //to check violation
+            while(arr[s]<pivot)
+                s++;
+            while(arr[e]>pivot)
+                e--;
+
+            if(s<=e)
+            {
+                int temp=arr[s];
+                arr[s]=arr[e];
+                arr[e]=temp;
+                s++;
+                e--;
+            }
+
+            //now my pivot is at right place, sort the two halves
+
+            quickSort(arr,low,e);
+            quickSort(arr,s,high);
+        }
+
+
+
+
+    }
+}
+
+Selection sort:
+
+import java.util.Arrays;
+import java.util.Scanner;
+public class Main {
+	public static void main(String []args)
+	{
+		int []a;
+		System.out.println("Enter Size Of Array");
+		Scanner scan=new Scanner(System.in);
+		a=new int[scan.nextInt()];
+		read(a);
+		System.out.println(Arrays.toString(a));
+		for(int i=0;i<a.length;i++)
+		{
+			int last=a.length-i-1;
+			int max=max(a,0,last);
+			swap(a,max,last);
+		}
+		System.out.println(Arrays.toString(a));
+	}
+	
+	public static void read(int []a)
+	{
+		System.out.println("Enter Array");
+		Scanner scan=new Scanner(System.in);
+		for(int i=0;i<a.length;i++)
+			a[i]=scan.nextInt();
+	}
+	
+	public static void swap(int a[],int first,int last)
+	{
+		int temp=a[last];
+		a[last]=a[first];
+		a[first]=temp;
+	}
+	
+	public static int max(int []a,int first,int last)
+	{
+		int temp=first;
+		for(int i=first;i<=last;i++)
+		{
+			if(a[i]>a[temp])
+			{
+				temp=i;
+			}
+		}
+		return(temp);
+	}
+}
