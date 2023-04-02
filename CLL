@@ -1,0 +1,65 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct node
+{
+    int data;
+    struct node *next;
+    struct node *prev;
+};
+
+struct node *creatlist(struct node *first)
+{
+    struct node *nw,*temp;
+    int n,i;
+    printf("\nEnter n:  ");
+    scanf("%d",&n);
+    for(i=0;i<n;i++)
+    {
+        nw=malloc(sizeof(struct node));
+        printf("\nEnter data : ");
+        scanf("%d",&nw->data);
+        if(first==NULL)
+        {
+            first=nw;
+            nw->next=first;
+            nw->prev=NULL;
+        }
+        else
+        {
+            temp=first;
+            do
+            {
+                temp=temp->next;
+            }while(temp->next!=first);
+            nw->next=first;
+            nw->prev=temp;
+            temp->next=nw;
+        }
+    }
+    return(first);
+}
+
+
+void display(struct node *first)
+{
+    struct node *temp=first;
+            do
+            {
+                printf("\n%d",temp->data);
+                temp=temp->next;
+            }while(temp!=first);
+}
+
+
+int main()
+{
+    struct node *first=NULL,*temp;
+    int k,i,ch;
+    first=creatlist(first);
+    display(first);
+    printf("\nEnter n:  ");
+    scanf("%d",&k);
+    for(temp=first,i=1;i<k;i++,temp=temp->next);
+    display(temp);
+    return 0;
+}
