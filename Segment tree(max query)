@@ -1,0 +1,54 @@
+import java.util.Arrays;
+
+public class Main {
+    public static void main(String[] args) {
+        int []a={1,2,3,4};
+        int []tree = new int[4*a.length];
+        buildSegment(0,a,tree,0,a.length-1);
+        System.out.println(query(0,tree,0,a.length-1,0,2));
+        System.out.println(Arrays.toString(tree));
+    }
+
+    public static void buildSegment(int ind,int []a,int []tree,int low,int high)
+    {
+        if(low==high)
+        {
+            tree[ind]=a[low];
+            return;
+        }
+
+        int mid = low+(high-low)/2;
+        buildSegment(2*ind+1,a,tree,low,mid);
+        buildSegment(2*ind+2,a,tree,mid+1,high);
+        if(tree[2*ind+1]>tree[2*ind+2])
+        {
+            tree[ind]= tree[2*ind+1];
+        }
+        else
+        {
+            tree[ind]=tree[2*ind+2];
+        }
+    }
+
+    public static int query(int ind,int []tree,int seg_low,int seg_high,int q_low,int q_high)
+    {
+        if(seg_low>=q_low && seg_high<=q_high)
+        {
+            return tree[ind];
+        }
+        if(q_low>seg_high || q_high<seg_low)
+        {
+            return Integer.MIN_VALUE;
+        }
+
+        if(seg_low==seg_high)
+        {
+            return tree[ind];
+        }
+
+        int mid=seg_low+(seg_high-seg_low)/2;
+        int left = query(2*ind+1,tree,seg_low,mid,q_low,q_high);
+        int right = query(2*ind+2,tree,mid+1,seg_high,q_low,q_high);
+        return left>right ? left : right;
+    }
+}
