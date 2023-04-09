@@ -1,0 +1,32 @@
+class Solution {
+    int maximumSumRectangle(int r, int c, int M[][]) {
+        // code here
+        int sum=Integer.MIN_VALUE;
+        for(int c1=0;c1<c;c1++)
+        {
+            int temp[] = new int[r];
+            for(int c2=c1;c2<c;c2++)
+            {
+                int sum1=0;
+                for(int i=0;i<r;i++)
+                {
+                    temp[i]+=M[i][c2];
+                }
+                
+                for(int i=0;i<r;i++)
+                {
+                    sum1+=temp[i];
+                    if(sum1>sum)
+                    {
+                        sum=sum1;
+                    }
+                    if(sum1<0)
+                    {
+                        sum1=0;
+                    }
+                }
+            }
+        }
+        return sum;
+    }
+};
