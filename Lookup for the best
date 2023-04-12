@@ -1,0 +1,32 @@
+import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.math.*;
+import java.util.regex.*;
+
+public class Solution {
+
+    public static void main(String[] args) {
+        /* Enter your code here. Read input from STDIN. Print output to STDOUT. Your class should be named Solution. */
+        Scanner scan=new Scanner(System.in);
+        int n=scan.nextInt();
+        long sum=0;
+        for(int i=0;i<n;i++)
+        {
+            long temp=scan.nextLong();
+            sum += fun(temp);
+        }
+        System.out.println(sum);
+    }
+    
+    public static long fun(long temp)
+    {
+        long ans=0;
+        while(temp!=0)
+        {
+            temp = temp&(temp-1);
+            ans++;
+        }
+        return ans;
+    }
+}
