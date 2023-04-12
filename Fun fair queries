@@ -1,0 +1,90 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+#define Int_max 1000001
+
+  int query(int t[],int ind,int low,int high,int l,int r)
+    {
+        int mid=0,left=0,right=0;
+        if(low>=l && high<=r)
+        {
+            return t[ind];
+        }
+        if(high<l || low>r)
+        {
+            return Int_max;
+        }
+        if(low==high)
+        {
+            return t[ind];
+        }
+        mid = low+(high-low)/2;
+        left = query(t,2*ind+1,low,mid,l,r);
+        right = query(t,2*ind+2,mid+1,high,l,r);
+        if(left<right)
+        {
+            return left;
+        }
+        else
+        {
+            return right;
+        }
+    }
+
+int minRange(int t[],int n,int left, int right) {
+        return query(t,0,0,n-1,left,right);
+}
+
+  
+
+void buildSegment(int t[],int ind,int low,int high,int a[])
+{
+        if(low==high)
+        {
+            t[ind] = a[low];
+            return;
+        }
+        int mid = low+(high-low)/2;
+        buildSegment(t,2*ind+1,low,mid,a);
+        buildSegment(t,2*ind+2,mid+1,high,a);
+        if(t[2*ind+1]<t[2*ind+2])
+        {
+            t[ind]=t[2*ind+1];
+        }
+        else
+        {
+            t[ind]=t[2*ind+2];
+        }
+}
+
+
+int main() {
+
+    /* Enter your code here. Read input from STDIN. Print output to STDOUT */ 
+    int n;
+    int m;
+    int l,r;
+    int i=0;
+    scanf("%d",&n);
+    scanf("%d",&m);
+    int *a =(int *) calloc(n,sizeof(int));
+    for(i=0;i<n;i++)
+    {
+        scanf("%d",&a[i]);
+    }
+    int *t =(int *) calloc(4*n,sizeof(int));
+    buildSegment(t,0,0,n-1,a);
+    // for(i=0;i<4*n;i++)
+    // {
+    //     printf("%d ",t[i]);
+    // }
+    while(m>0)
+    {
+        scanf("%d",&l);
+        scanf("%d",&r);
+        printf("%d\n",minRange(t,n,l,r));
+        m--;
+    }
+    return 0;
+}
