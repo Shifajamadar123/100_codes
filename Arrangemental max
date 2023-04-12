@@ -1,0 +1,66 @@
+import java.util.*;
+
+public class Solution {
+
+    public static void main(String[] args){
+        /* Enter your code here. Read input from STDIN. Print output to STDOUT. Your class should be named Solution. */
+        Scanner scan = new Scanner(System.in);
+        int n=scan.nextInt();
+        int m=scan.nextInt();
+        int [][]a=new int[n][m];
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<m;j++)
+            {
+                a[i][j]=scan.nextInt();
+            }
+        }
+        long sum=Long.MIN_VALUE;
+        int srow=0,erow=0;
+        int scol=0,ecol=0;
+        for(int c=0;c<m;c++)
+        {
+            long []temp = new long[n];
+            for(int c1=c;c1<m;c1++)
+            {
+                int sr=0;
+                long sum1=0;
+                for(int i=0;i<n;i++)
+                {
+                    temp[i]+=a[i][c1];
+                    sum1+=temp[i];
+                    if(sum1<temp[i])
+                    {
+                         sum1 = temp[i];
+                         sr = i;
+                    }
+                    if(sum1>sum)
+                    {
+                        sum=sum1;
+                        erow=i;
+                        scol=c;
+                        ecol=c1;
+                        srow = sr;
+                    }
+                }
+                //System.out.println(Arrays.toString(temp));
+            }
+        }
+        //System.out.println("start row: "+srow+"End row:  "+erow+"Start col:  "+scol+"End col: "+ecol);
+        
+        System.out.println(sum);
+        for(int i=srow;i<=erow;i++)
+        {
+            for(int j=scol;j<=ecol;j++)
+            {
+                if(a[i][j]<0)
+                {
+                    //System.out.println(a[i][j]);
+                    sum = sum + (a[i][j]-2*a[i][j]);
+                }
+            }
+        }
+        System.out.println(sum);    
+        
+    }
+}
