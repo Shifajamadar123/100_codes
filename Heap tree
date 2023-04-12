@@ -1,0 +1,202 @@
+import java.util.Arrays;
+
+public class Main {
+    public static void main(String[] args) {
+        heap h = new heap(10);
+
+        int []a= {10,20,40,80,100,70};
+        a=h.build(a);
+
+//        System.out.println(Arrays.toString(a));
+
+//        System.out.println(h.extractMin());
+//        System.out.println(Arrays.toString(a));
+//        h.insert(30);
+//        h.insert(100);
+//        h.insert(400);
+//        h.insert(1);
+//        h.insert(5);
+//        System.out.println(Arrays.toString(a));
+        h.display();
+
+        h.decrease(3,5);
+        h.display();
+        h.delete(3);
+        h.display();
+
+
+
+
+    }
+}
+
+class heap
+{
+    private int max_size;
+    private int heap_size;
+    private int []heap_arr;
+
+    public int getMax_size() {
+        return max_size;
+    }
+
+    public void setMax_size(int max_size) {
+        this.max_size = max_size;
+    }
+
+    public int getHeap_size() {
+        return heap_size;
+    }
+
+    public void setHeap_size(int heap_size) {
+        this.heap_size = heap_size;
+    }
+
+    public int[] getHeap_arr() {
+        return Arrays.copyOf(heap_arr,heap_size);
+    }
+
+    public void setHeap_arr(int[] heap_arr) {
+        this.heap_arr = heap_arr;
+    }
+
+
+
+    heap(int n)
+    {
+        this.max_size=n;
+        this.heap_size=0;
+        this.heap_arr = new int[n];
+    }
+
+    void insert(int data)
+    {
+        if(heap_size==max_size)
+        {
+            System.out.println("Key cannot be inserted");
+            return;
+        }
+
+        heap_size++;
+        int i = heap_size-1;
+        heap_arr[i]=data;
+        while(heap_arr[parent(i)]>heap_arr[i] && i!=0)
+        {
+            swap(parent(i),i);
+            i=parent(i);
+        }
+
+    }
+
+    private void swap(int a,int b)
+    {
+        int temp=heap_arr[b];
+        heap_arr[b]= heap_arr[a];
+        heap_arr[a]=temp;
+    }
+
+    private void Min_heapify(int i)
+    {
+        int l = lchild(i);
+        int r = rchild(i);
+        int min = i;
+        if(l<heap_size && heap_arr[l]<heap_arr[min])
+        {
+                min = l;
+        }
+        if(r<heap_size && heap_arr[r]<heap_arr[min])
+        {
+            min = r;
+        }
+        if(min !=i)
+        {
+            swap(min,i);
+            Min_heapify(min);
+        }
+
+    }
+
+    private int lchild(int i)
+    {
+        return (2*i + 1);
+    }
+
+    private int rchild(int i)
+    {
+        return (2*i + 2);
+    }
+
+    //extractMin()--> to remove the minimum element from the heap i,e the root
+    int extractMin()
+    {
+        if(heap_size==0)
+        {
+            return -1;
+        }
+        int data = heap_arr[0];
+        heap_arr[0] = heap_arr[heap_size-1];
+        heap_size--;
+        Min_heapify(0);
+        return data;
+    }
+
+    void delete(int i)
+    {
+        if(i>=heap_size)
+        {
+            System.out.println("Invalid index");
+        }
+        decrease(i,Integer.MIN_VALUE);
+        extractMin();
+    }
+
+    private int parent(int i)
+    {
+        return (i-1)/2;
+    }
+
+    //build() --> give an array of elements converts it into heap
+    int[] build(int []a)
+    {
+        if(a.length>max_size)
+        {
+            System.out.println("Heap tree cannot be constructed");
+        }
+        this.heap_arr=Arrays.copyOf(a,max_size);
+        this.heap_size=a.length;
+//        System.out.println(Arrays.toString(heap_arr));
+        for(int i=((heap_size-2)/2) ; i>=0;i--)
+        {
+            Min_heapify(i);
+        }
+//        System.out.println(Arrays.toString(heap_arr));
+        return Arrays.copyOf(heap_arr,heap_size);
+    }
+
+    //decrease()--> replace value at index it to data
+    void decrease(int i,int data)
+    {
+        if(i>=heap_size)
+        {
+            System.out.println("Invalid index");
+            return;
+        }
+        heap_arr[i]=data;
+        while(i!=0 && heap_arr[parent(i)]>heap_arr[i])
+        {
+            swap(parent(i),i);
+            i = parent(i);
+        }
+    }
+
+
+    public void display() {
+        System.out.print("\n[ ");
+        for(int i=0;i<heap_size;i++) {
+            System.out.print(heap_arr[i]+" ");
+        }
+        System.out.print("]\n");
+    }
+
+
+}
