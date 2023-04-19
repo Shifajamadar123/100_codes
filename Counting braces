@@ -1,0 +1,91 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define STACKSIZE 100
+struct stack
+{
+    char exp[STACKSIZE];
+    int top;
+};
+void push(struct stack *ps,char s)
+{
+    ps->top=ps->top+1;
+    ps->exp[ps->top]=s;
+}
+
+void pop(struct stack *ps)
+{
+    if(ps->top==-1)
+    {
+        printf("\nStack empty");
+    }
+    else
+       ps->top=ps->top-1;
+}
+
+int main()
+{
+    struct stack stk;
+    int i,flag=0;
+    char data;
+    char s[100];
+    stk.top=-1;
+    printf("\nEnter expression:  ");
+    gets(s);
+    printf("\nEntered expression is: ");
+    puts(s);
+    for(i=0;s[i]!='\0';i++)
+    {
+        if(s[i]=='['||s[i]=='{'||s[i]=='(')
+        {
+            push(&stk,s[i]);
+            continue;
+        }
+        else if(s[i]==']'||s[i]=='}'||s[i]==')')
+        {
+            if(s[i]==')')
+            {
+                if(stk.exp[stk.top]=='(')
+                {
+                    pop(&stk);
+                }
+                else
+               {
+                    printf("\nThe expression is not balanced");
+                    break;
+               }
+            }
+            if(s[i]=='}')
+            {
+                if(stk.exp[stk.top]=='{')
+                {
+                    pop(&stk);
+                }
+                else
+               {
+                    printf("\nThe expression is not balanced");
+                    break;
+               }
+            }
+            if(s[i]==']')
+            {
+                if(stk.exp[stk.top]=='[')
+                {
+                    pop(&stk);
+                }
+                else
+               {
+                    printf("\nThe expression is not balanced");
+                    break;
+               }
+            }
+        }
+
+    }
+    if(stk.top==-1)
+    {
+        printf("\nThe expression is balanced");
+    }
+    return 0;
+}
+
