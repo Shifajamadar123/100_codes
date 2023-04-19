@@ -1,0 +1,226 @@
+import sun.reflect.generics.tree.Tree;
+
+import java.util.Scanner;
+
+public class BinaryTree {
+    public static void main(String[] args) {
+        Scanner scan=new Scanner(System.in);
+        TreeNode root=null;
+        root= createBinaryTree(root);
+        inorderTraversal(root);
+        System.out.println("Enter data to search");
+        TreeNode ans=search(scan.nextInt(),root);
+        if(ans==null)
+        {
+            System.out.println("Data does not exist");
+        }
+        else
+        {
+            System.out.println("Data found");
+        }
+        System.out.println("Enter data to delete");
+        root=deleteData(scan.nextInt(),root);
+        inorderTraversal(root);
+    }
+
+    public static TreeNode createBinaryTree(TreeNode root)
+    {
+        int n;
+        TreeNode a[];
+        TreeNode par;
+        Scanner scan=new Scanner(System.in);
+        System.out.println("Enter n:");
+        n=scan.nextInt();
+        a=new TreeNode[n];
+        for(int i=0;i<n;i++)
+        {
+            System.out.println("Enter data: ");
+            a[i]=new TreeNode(scan.nextInt());
+            par=root;
+            if(root==null)
+            {
+                root=a[i];
+            }
+            else
+            {
+                while(true)
+                {
+                    if(par.data > a[i].data)
+                    {
+                        if(par.left !=null)
+                        {
+                            par=par.left;
+                        }
+                        else
+                        {
+                            par.left=a[i];
+                            System.out.println("Data entered to the left of "+par.data);
+                            break;
+                        }
+                    }
+                    else if(par.data < a[i].data)
+                    {
+                        if(par.right !=null)
+                        {
+                            par=par.right;
+                        }
+                        else
+                        {
+                            par.right=a[i];
+                            System.out.println("Data entered to the right of "+par.data);
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        System.out.println("Node exists");
+                        break;
+                    }
+                }
+            }
+        }
+        return root;
+    }
+
+    private static class TreeNode
+    {
+        private TreeNode right;
+        private TreeNode left;
+        private int data;
+
+        public TreeNode(int data) {
+            this.data = data;
+            this.right=null;
+            this.left=null;
+        }
+
+        public int getData() {
+            return data;
+        }
+
+        public void setData(int data) {
+            this.data = data;
+        }
+
+        public TreeNode getRight() {
+            return right;
+        }
+
+        public void setRight(TreeNode right) {
+            this.right = right;
+        }
+
+        public TreeNode getLeft() {
+            return left;
+        }
+
+        public void setLeft(TreeNode left) {
+            this.left = left;
+        }
+    }
+
+
+    public static void inorderTraversal(TreeNode root)
+    {
+        if(root==null)
+        {
+            return;
+        }
+        inorderTraversal(root.left);
+        System.out.println(root.data);
+        inorderTraversal(root.right);
+    }
+
+    public static TreeNode search(int data,TreeNode root)
+    {
+        TreeNode temp=root;
+        while(temp!=null)
+        {
+            if(data== temp.data)
+                return(temp);
+            else if(data>temp.data)
+                temp=temp.right;
+            else
+                temp=temp.left;
+        }
+        return(temp);
+    }
+
+    public static TreeNode getParent(TreeNode cur,TreeNode root)
+    {
+        TreeNode par;
+        if(cur==root)
+        {
+            return(null);
+        }
+        par=root;
+        while(cur!=par.left && cur!=par.right)
+        {
+            if(cur.data < par.data)
+                par=par.left;
+            else
+                par=par.right;
+        }
+        return(par);
+    }
+
+    public static TreeNode deleteData(int data,TreeNode root)
+    {
+        TreeNode cur=search(data,root);
+        if(cur==null)
+        {
+            System.out.println("Data not found to delete");
+            return(root);
+        }
+        TreeNode par=getParent(cur,root);
+        TreeNode temp=cur;
+        if(cur.left!=null && cur.right!=null)
+        {
+            cur=cur.left;
+            while(cur.right!=null) {
+                par=cur;
+                cur = cur.right;
+            }
+            temp.data=cur.data;
+        }
+        if(cur.left!=null && cur.right==null)
+        {
+            if(cur!=root)
+            {
+                if(par.left==cur)
+                    par.left=cur.left;
+                else
+                    par.right=cur.left;
+            }
+            else
+                root=root.left;
+        }
+        else if(cur.left==null && cur.right!=null)
+        {
+            if(cur!=root)
+            {
+                if(par.right==cur)
+                    par.right=cur.right;
+                else
+                    par.left=cur.right;
+            }
+            else
+                root=root.right;
+        }
+        else
+        {
+            if(cur!=root)
+            {
+                if(par.left==cur)
+                    par.left=null;
+                else
+                    par.right=null;
+            }
+            else
+                root=null;
+        }
+        cur=null;
+        System.out.println("Data deleted successfully....");
+        return(root);
+    }
+}
